@@ -1,3 +1,4 @@
+import datetime
 from scapy.all import sniff, PcapWriter
 import sqlite3
 
@@ -21,12 +22,14 @@ conn.commit()
 
 def process_packet(packet, pcap_writer):
     if packet.haslayer('IP'):
+        timestamp = datetime.datetime.fromtimestamp(packet.time)
         src_ip = packet['IP'].src
         dst_ip = packet['IP'].dst
         protocol = packet.sprintf('%IP.proto%')
 
-        cursor.execute("INSERT INTO packets (timestamp, src_ip, dst_ip, protocol ) VALUES (datetime('now'), ?, ?, ?)",
-                       (src_ip, dst_ip, protocol))
+        cursor.execute("INSERT INTO packets (timestamp, src_ip, dst_ip, protocol ) VALUES (?, ?, ?, ?)",
+                       (timestamp,src_ip, dst_ip, protocol))
+
         conn.commit()
         print(f"Captured: {src_ip} -> {dst_ip} ({protocol})")
         pcap_writer.write(packet)
