@@ -40,3 +40,6 @@ def capture(pcap_file):
 def main():
     pcap_file = "captured.pcap"
     capture(pcap_file)
+
+if __name__ == "__main__":   
+    main() 
