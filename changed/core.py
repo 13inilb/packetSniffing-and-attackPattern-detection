@@ -89,7 +89,7 @@ class PacketAnalyzer:
     def analyze_pcap(self, pcap_file, log_location="./suricata_logs/"):
         os.makedirs(log_location, exist_ok=True)
         suricata_cmd = [
-            "suricata", "-c", "/etc/suricata/suricata.yaml",
+            "sudo", "suricata", "-c", "/etc/suricata/suricata.yaml",
             "-k", "none", "-r", pcap_file,
             "--runmode=autofp", "-l", log_location
         ]
