@@ -19,13 +19,12 @@ cursor.execute("""
 """)
 conn.commit()
 
-
-
 def process_packet(packet, pcap_writer):
     if packet.haslayer('IP'):
         timestamp = datetime.datetime.fromtimestamp(packet.time)
         src_ip = packet['IP'].src
         dst_ip = packet['IP'].dst
+#       if (src_ip != "127.0.0.53") and (dst_ip != "127.0.0.53"): for avoiding local dns resolve
         protocol = packet.sprintf('%IP.proto%')
 
         src_port, dst_port = None, None
